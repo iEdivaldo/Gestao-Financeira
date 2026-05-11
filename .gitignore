@@ -1,0 +1,18 @@
+# Java
+backend/target/
+*.class
+*.jar
+
+# Segredos — NUNCA subir
+backend/src/main/resources/application-local.yml
+*.env
+
+# Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDEs
+.idea/
+*.iml
+.vscode/settings.json
