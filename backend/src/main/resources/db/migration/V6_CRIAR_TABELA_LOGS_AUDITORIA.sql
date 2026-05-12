@@ -1,7 +1,7 @@
-CREATE TABLE logs_auditoria (
+CREATE TABLE logs_auditorias (
     id UUID PRIMARY KEY,
-    acao VARCHAR(255) NOT NULL CHECK (acao IN ('LOGIN', 'LOGOUT', 'CRIAR_TRANSACAO', 'DELETAR_TRANSACAO')),
-    entitdade VARCHAR(50),
+    acao VARCHAR(50) NOT NULL,
+    entidade VARCHAR(50),
     entidade_id UUID,
     detalhe TEXT,
     ip VARCHAR(45),

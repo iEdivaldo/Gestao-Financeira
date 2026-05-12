@@ -1,5 +1,5 @@
 CREATE TABLE orcamentos (
-    id UUID PRIMARY KEY AUTO_GENERATED,
+    id UUID PRIMARY KEY,
     mes INTEGER NOT NULL CHECK (mes >= 1 AND mes <= 12),
     ano INTEGER NOT NULL CHECK (ano >= 2000),
     valor_limite DECIMAL(15, 2) NOT NULL CHECK (valor > 0),

@@ -1,5 +1,5 @@
 CREATE TABLE transacoes (
-    id UUID PRIMARY KEY AUTO_GENERATED,
+    id UUID PRIMARY KEY,
     descricao VARCHAR(200) NOT NULL,
     valor DECIMAL(15, 2) NOT NULL CHECK (valor > 0),
     tipo VARCHAR(10) NOT NULL CHECK (tipo IN ('RECEITA', 'DESPESA')),
