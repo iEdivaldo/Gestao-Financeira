@@ -2,7 +2,7 @@ package com.gestaofinanceira.backend.dto.Usuario;
 
 import java.time.LocalDateTime;
 
-import com.gestaofinanceira.backend.model.ClassEnum.Perfil;
+import com.gestaofinanceira.backend.model.enums.Perfil;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

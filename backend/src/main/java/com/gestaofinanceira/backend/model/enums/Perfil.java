@@ -1,4 +1,4 @@
-package com.gestaofinanceira.backend.model.ClassEnum;
+package com.gestaofinanceira.backend.model.enums;
 
 public enum Perfil {
     ADMIN,

@@ -1,6 +1,6 @@
 package com.gestaofinanceira.backend.dto.Conta;
 
-import com.gestaofinanceira.backend.model.ClassEnum.TipoConta;
+import com.gestaofinanceira.backend.model.enums.TipoConta;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

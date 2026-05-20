@@ -2,7 +2,7 @@ package com.gestaofinanceira.backend.model;
 
 import java.util.UUID;
 
-import com.gestaofinanceira.backend.model.ClassEnum.TipoConta;
+import com.gestaofinanceira.backend.model.enums.TipoConta;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

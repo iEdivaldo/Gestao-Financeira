@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gestaofinanceira.backend.model.ClassEnum.Perfil;
+import com.gestaofinanceira.backend.model.enums.Perfil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

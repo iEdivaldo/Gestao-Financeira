@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.gestaofinanceira.backend.model.ClassEnum.StatusTransacao;
-import com.gestaofinanceira.backend.model.ClassEnum.TipoTransacao;
+import com.gestaofinanceira.backend.model.enums.StatusTransacao;
+import com.gestaofinanceira.backend.model.enums.TipoTransacao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
