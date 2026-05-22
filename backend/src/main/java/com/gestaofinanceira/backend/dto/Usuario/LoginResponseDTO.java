@@ -4,20 +4,11 @@ import java.util.UUID;
 
 import com.gestaofinanceira.backend.model.enums.Perfil;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record LoginResponseDTO (
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class LoginResponseDTO {
-
-    private String token;
-    private UUID id;
-    private String nome;
-    private String email;
-    private Perfil perfil;
-}
+    String token,
+    UUID id,
+    String nome,
+    String email,
+    Perfil perfil
+) {}

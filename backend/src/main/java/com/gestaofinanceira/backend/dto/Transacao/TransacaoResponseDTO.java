@@ -1,37 +1,54 @@
 package com.gestaofinanceira.backend.dto.Transacao;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
+import com.gestaofinanceira.backend.model.Transacao;
 import com.gestaofinanceira.backend.model.enums.StatusTransacao;
 import com.gestaofinanceira.backend.model.enums.TipoTransacao;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record TransacaoResponseDTO (
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class TransacaoResponseDTO {
+    UUID id,
+    String descricao,
+    BigDecimal valor,
+    TipoTransacao tipo,
+    StatusTransacao status,
+    LocalDate dataVencimento,
+    LocalDate dataPagamento,
+    Boolean recorrente,
+    String observacao,
 
-    private UUID id;
-    private String descricao;
-    private Double valor;
-    private TipoTransacao tipo;
-    private StatusTransacao status;
-    private Date dataVencimento;
-    private Date dataPagamento;
-    private Boolean recorrente;
-    private String observacao;
-    private UUID usuarioId;
-    private UUID categoriaId;
-    private UUID contaId;
-    private LocalDateTime criadoEm;
-    
-    private String nomeCategoria;
-    private String nomeConta;
+    UUID categoriaId,
+    String categoriaNome,
+    String categoriaIcone,
+    String categoriaCor,
+
+    UUID contaId,
+    String contaNome,
+
+    LocalDateTime criadoEm
+) {
+    public static TransacaoResponseDTO de(Transacao transacao) {
+        return new TransacaoResponseDTO(
+            transacao.getId(),
+            transacao.getDescricao(),
+            transacao.getValor(),
+            transacao.getTipo(),
+            transacao.getStatus(),
+            transacao.getDataVencimento(),
+            transacao.getDataPagamento(),
+            transacao.getRecorrente(),
+            transacao.getObservacao(),
+            transacao.getCategoria().getId(),
+            transacao.getCategoria().getNome(),
+            transacao.getCategoria().getIcone(),
+            transacao.getCategoria().getCor(),
+            transacao.getConta().getId(),
+            transacao.getConta().getNome(),
+            transacao.getCriadoEm()
+        );
+    }
 }

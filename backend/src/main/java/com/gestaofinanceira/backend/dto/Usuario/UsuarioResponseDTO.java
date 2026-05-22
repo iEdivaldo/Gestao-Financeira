@@ -1,24 +1,28 @@
 package com.gestaofinanceira.backend.dto.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+import com.gestaofinanceira.backend.model.Usuario;
 import com.gestaofinanceira.backend.model.enums.Perfil;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record  UsuarioResponseDTO (
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UsuarioResponseDTO {
-
-    private Long id;
-    private String nome;
-    private String email;
-    private Boolean ativo;
-    private Perfil perfil;
-    private LocalDateTime criadoEm;
+    UUID id,
+    String nome,
+    String email,
+    Boolean ativo,
+    Perfil perfil,
+    LocalDateTime criadoEm
+) {
+    public static UsuarioResponseDTO de(Usuario usuario) {
+        return new UsuarioResponseDTO(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getAtivo(),
+            usuario.getPerfil(),
+            usuario.getCriadoEm()
+        );
+    }
 }

@@ -1,17 +1,14 @@
 package com.gestaofinanceira.backend.dto.Usuario;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class LoginRequestDTO {
+public record LoginRequestDTO(
 
-    private String email;
-    private String senha;
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Formato de e-mail inválido")
+    String email,
 
-}
+    @NotBlank(message = "A senha é obrigatória")
+    String senha
+) {}

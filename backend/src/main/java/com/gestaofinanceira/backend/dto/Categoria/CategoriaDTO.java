@@ -1,22 +1,35 @@
 package com.gestaofinanceira.backend.dto.Categoria;
 
+import java.util.UUID;
+
+import com.gestaofinanceira.backend.model.Categoria;
 import com.gestaofinanceira.backend.model.enums.TipoTransacao;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class CategoriaDTO {
+public record CategoriaDTO (
 
-    private String id;
-    private String nome;
-    private TipoTransacao tipo;
-    private String cor;
-    private String icone;
-    private Boolean ativo;
+    UUID id,
+
+    @NotBlank(message = "O nome é obrigatório")
+    String nome,
+
+    @NotNull(message = "O tipo de transação é obrigatório")
+    TipoTransacao tipo,
+
+    String cor,
+    String icone,
+    Boolean ativo
+) {
+    public static CategoriaDTO de(Categoria categoria) {
+        return new CategoriaDTO(
+            categoria.getId(),
+            categoria.getNome(),
+            categoria.getTipo(),
+            categoria.getCor(),
+            categoria.getIcone(),
+            categoria.getAtivo()
+        );
+    }
 }

@@ -1,22 +1,23 @@
 package com.gestaofinanceira.backend.dto.LogsAuditorias;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import com.gestaofinanceira.backend.dto.Transacao.TransacaoResponseDTO;
+public record RelatorioMensalDTO (
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class RelatorioMensalDTO {
-
-    private Double totalReceitas;
-    private Double totalDespesas;
-    private Double saldoFinal;
-    private List<TransacaoResponseDTO> transacoesPorCategoria;
+    int mes,
+    int ano,
+    BigDecimal totalReceitas,
+    BigDecimal totalDespesas,
+    BigDecimal saldo,
+    BigDecimal totalPendente,
+    List<ResumoPorCategoriaDTO> despesasPorCategoria
+) {
+    public record ResumoPorCategoriaDTO (
+        String categoriaNome,
+        String categoriaIcone,
+        String categoriaCor,
+        BigDecimal total,
+        BigDecimal percentualDoTotal
+    ) {}
 }
