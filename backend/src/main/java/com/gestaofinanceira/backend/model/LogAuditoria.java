@@ -14,13 +14,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "logs_auditorias")
+@Table(name = "logs_auditoria")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LogAuditoria {
 
     @Id
@@ -33,8 +37,8 @@ public class LogAuditoria {
     @Column(nullable = true, length = 50)
     private String entidade;
 
-    @Column(nullable = true)
-    private UUID entidade_id;
+    @Column(name = "entidade_id")
+    private UUID entidadeId;
 
     @Column(columnDefinition = "TEXT")
     private String detalhe;
@@ -43,7 +47,7 @@ public class LogAuditoria {
     private String ip;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @CreationTimestamp
