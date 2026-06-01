@@ -1,6 +1,5 @@
 package com.gestaofinanceira.backend.services;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,10 @@ public class CategoriaService {
 
     // CRUD COMPLETO DE CATEGORIAS POR USUARIOS
 
-    // GET
-    public List<Categoria> obterCategoriasPorUsuario(Usuario usuario) {
-        return categoriaRepository.findAllByUsuarioAndAtivo(usuario, true);
-    }
+    // // GET
+    // public List<Categoria> obterCategoriasPorUsuario(Usuario usuario) {
+    //     return categoriaRepository.findAllByUsuarioAndAtivo(usuario, true);
+    // }
 
     public Categoria obterCategoriaPorId(Usuario usuario, @NonNull UUID id) {
         return categoriaRepository.findById(id)

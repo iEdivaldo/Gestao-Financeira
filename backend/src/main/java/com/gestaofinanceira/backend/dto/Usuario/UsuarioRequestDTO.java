@@ -4,6 +4,7 @@ import com.gestaofinanceira.backend.model.enums.Perfil;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioRequestDTO (
@@ -20,6 +21,6 @@ public record UsuarioRequestDTO (
     @Size(min = 6, message = "A senha deve conter no mínimo 6 caracteres")
     String senha,
     
-    @NotBlank(message = "O perfil é obrigatório")
+    @NotNull(message = "O perfil é obrigatório")
     Perfil perfil
 ) {}

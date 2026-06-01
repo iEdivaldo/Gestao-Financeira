@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fincontrol
+    username: fincontrol
+    password: fincontrol123
+  jpa:
+    hibernate:
+      ddl-auto: create #VALIDATE for the futher
+    open-in-view: false
+  flyway:
+    enabled: true
+
+jwt:
+  secret: MinhaChaveSuperSecretaComMaisDe32Caracteres
+  expiration: 86400000
+
+server:
+  port: 8080

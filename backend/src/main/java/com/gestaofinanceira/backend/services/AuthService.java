@@ -1,75 +1,120 @@
 package com.gestaofinanceira.backend.services;
 
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.UUID;
 
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.gestaofinanceira.backend.dto.Usuario.LoginRequestDTO;
+import com.gestaofinanceira.backend.dto.Usuario.LoginResponseDTO;
+import com.gestaofinanceira.backend.dto.Usuario.UsuarioRequestDTO;
+import com.gestaofinanceira.backend.dto.Usuario.UsuarioResponseDTO;
+import com.gestaofinanceira.backend.exception.BusinessException;
+import com.gestaofinanceira.backend.model.LogAuditoria;
 import com.gestaofinanceira.backend.model.Usuario;
+import com.gestaofinanceira.backend.model.enums.Perfil;
+import com.gestaofinanceira.backend.repository.LogAuditoriaRepository;
+import com.gestaofinanceira.backend.repository.UsuarioRepository;
+import com.gestaofinanceira.backend.security.JwtUtil;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
-    @Value("${api.security.token.secret}")
-    private String jwtSecret;
+    private final UsuarioRepository usuarioRepository;
+    private final LogAuditoriaRepository logAuditoriaRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
-    private SecretKey secretKey;
+    // login
+    @Transactional // garante que a operação de login seja atômica, ou seja, ou tudo ocorre com sucesso ou nada é persistido
+    public LoginResponseDTO login(LoginRequestDTO dto, HttpServletRequest request) {
+        // o authenticationManager validao e-mail + senha automaticamente
+        // se credenciais forem invalidas lançará o BadCredentialsException, que é tratado no GlobalExceptionHandler
+        // se forem validas, o fluxo continua normalmente
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.email(), dto.senha()));
 
-    @Autowired
-    private UsuarioService usuarioService;
+        // se chegou aqui, é porque as credenciais são válidas
+        Usuario usuario = usuarioRepository.findByEmail(dto.email()).orElseThrow(); // não precisa tratar o Optional aqui, pois se o email não existir, a autenticação já falhou e lançou uma exceção
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // Gerar token JWT
+        String token = jwtUtil.gerarToken(usuario);
 
-    public boolean autenticar(String email, String senha) {
-        Usuario usuario = usuarioService.obterUsuarioPorEmail(email);
-        if (usuario != null && usuario.getAtivo()) {
-            return passwordEncoder.matches(senha, usuario.getSenha());
+        // registra o log de auditoria de login
+        salvarLog("LOGIN", null, null, "{\"email\": \"" + dto.email() + "\"}", request, usuario);
+    
+        log.info("Login realizado: {}", usuario.getEmail());
+
+        return new LoginResponseDTO(
+            token,
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getPerfil()
+        );
+    }
+
+    // registro
+    @Transactional
+    public UsuarioResponseDTO registrar(UsuarioRequestDTO dto, HttpServletRequest request) {
+        // Verificar se o email já está registrado
+        if (usuarioRepository.existsByEmail(dto.email())) {
+            throw new BusinessException("Email já registrado");
         }
-        return false;
+
+        // Criar novo usuário
+        Usuario usuario = Usuario.builder()
+            .nome(dto.nome())
+            .email(dto.email())
+            .senha(passwordEncoder.encode(dto.senha())) // criptografa a senha antes de salvar
+            .perfil(dto.perfil() != null ? dto.perfil() : Perfil.USUARIO) // define perfil padrão como USUARIO se não for fornecido
+            .ativo(true) // define o usuário como ativo por padrão
+            .build();
+
+        // Salvar usuário no banco de dados
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        // registra o log de auditoria de registro
+        salvarLog("REGISTRO", "usuarios", usuarioSalvo.getId().toString(), "{\"email\": \"" + usuarioSalvo.getEmail() + "\"}", request, usuarioSalvo);
+    
+        log.info("Novo usuario registrado: {}", usuarioSalvo.getEmail());
+
+        return UsuarioResponseDTO.de(usuarioSalvo);
+    }
+
+    @Transactional
+    public void logout(LogAuditoria logEntry) {
+        // Salvar o log de auditoria de logout
+        logAuditoriaRepository.save(logEntry);
+        log.info("Logout realizado: {}", logEntry.getUsuario().getEmail());
     }
     
-    public String gerarToken(Usuario usuario) {
-        Instant agora = Instant.now();
-
-        return Jwts.builder()
-            .subject(usuario.getEmail())
-            .claim("id", usuario.getId().toString())
-            .claim("nome", usuario.getNome())
-            .claim("perfil", usuario.getPerfil().name())
-            .issuedAt(Date.from(agora))
-            .expiration(Date.from(agora.plus(1, ChronoUnit.HOURS)))
-            .signWith(secretKey, Jwts.SIG.HS256)
-            .compact();
-    }
-
-    public String ValidateToken(String token) {
+    // metodo auxiliar o salvar log de auditoria
+    private void salvarLog(String acao, String entidade, String entidadeId, String detalhe, HttpServletRequest request, Usuario usuario) {
         try {
-            return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-        } catch (Exception e) {
-            return null;
-        }
-    }
+            LogAuditoria log = LogAuditoria.builder()
+                .acao(acao)
+                .entidade(entidade)
+                // converte a string do id para UUID, se for nula, passa null
+                .entidadeId(entidadeId != null ? UUID.fromString(entidadeId) : null)
+                .detalhe(detalhe)
+                // pega id do cliente da requisicao HTTP
+                .ip(request.getRemoteAddr())
+                .usuario(usuario)
+                .build();
 
-    @PostConstruct
-    public void init() {
-        this.secretKey = Keys.hmacShaKeyFor(
-            jwtSecret.getBytes(StandardCharsets.UTF_8)
-        );
+                logAuditoriaRepository.save(log);
+        } catch (Exception e) {
+            log.warn("Falha ao salvar log de auditoria: {}", e.getMessage());
+        }
     }
 }

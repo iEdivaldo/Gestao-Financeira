@@ -16,10 +16,10 @@ public class OrcamentoService {
         return orcamentoRepository.save(orcamento);
     } 
 
-    public double verificarPercentualGastoDoMes(Orcamento orcamento) {
-        if (orcamento.getValorLimite() > 0) {
-            return (orcamento.getValorLimite() / orcamento.getValorLimite()) * 100;
-        }
-        return 0;
-    }
+    // public double verificarPercentualGastoDoMes(Orcamento orcamento) {
+    //     if (orcamento.getValorLimite() > 0) {
+    //         return (orcamento.getValorLimite() / orcamento.getValorLimite()) * 100;
+    //     }
+    //     return 0;
+    // }
 }

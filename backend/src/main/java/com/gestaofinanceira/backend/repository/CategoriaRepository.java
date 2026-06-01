@@ -14,7 +14,7 @@ import com.gestaofinanceira.backend.model.enums.TipoTransacao;
 public interface CategoriaRepository extends JpaRepository<Categoria, UUID> {
     List<Categoria> findAllByUsuarioIdAndAtivo(UUID usuarioId, boolean ativo);
 
-    List<Categoria> findAllByUsuarioAndTipoAndAtivo(UUID usuarioId, TipoTransacao tipo, boolean ativo);
+    List<Categoria> findAllByUsuarioIdAndTipoAndAtivo(UUID usuarioId, TipoTransacao tipo, boolean ativo);
 
     boolean existsByNomeAndUsuarioId(String nome, UUID usuarioId);
 
