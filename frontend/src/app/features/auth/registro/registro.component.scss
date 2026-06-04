@@ -1,0 +1,71 @@
+// Reutiliza o mesmo estilo do login — apenas troca a classe raiz
+.registro-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a237e 0%, #1565c0 100%);
+  padding: 1rem;
+}
+
+.registro-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+
+  mat-icon { font-size: 36px; width: 36px; height: 36px; color: #1565c0; }
+  h1 { margin: 0; font-size: 28px; font-weight: 700; color: #1a237e; }
+}
+
+.subtitulo { color: #666; margin: 0 0 16px; font-size: 14px; }
+
+.erro-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffebee;
+  border: 1px solid #ef9a9a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #c62828;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.campo-full { width: 100%; margin-bottom: 8px; }
+
+.btn-criar {
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.link-login {
+  text-align: center;
+  width: 100%;
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+
+  a { color: #1565c0; font-weight: 500; text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+mat-card-header { flex-direction: column; padding-bottom: 0; }
+mat-card-actions { padding: 8px 16px 16px; }

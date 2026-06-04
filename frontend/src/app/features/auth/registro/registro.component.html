@@ -1,0 +1,98 @@
+<div class="registro-wrapper">
+  <mat-card class="registro-card">
+
+    <mat-card-header>
+      <div class="logo">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <h1>FinControl</h1>
+      </div>
+      <p class="subtitulo">Crie sua conta gratuita</p>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <ng-container *ngIf="erroRegistro()">
+        <div class="erro-alert">
+          <mat-icon>error_outline</mat-icon>
+          {{ erroRegistro() }}
+        </div>
+      </ng-container>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Nome -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Nome completo</mat-label>
+          <input matInput formControlName="nome" placeholder="Seu nome" />
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-error *ngIf="nomeCtrl.touched && nomeCtrl.hasError('required')">Nome é obrigatório</mat-error>
+          <mat-error *ngIf="nomeCtrl.touched && nomeCtrl.hasError('minlength')">Mínimo de 2 caracteres</mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="seu@email.com" />
+          <mat-icon matPrefix>email</mat-icon>
+          <mat-error *ngIf="emailCtrl.touched && emailCtrl.hasError('required')">Email é obrigatório</mat-error>
+          <mat-error *ngIf="emailCtrl.touched && emailCtrl.hasError('email')">Formato de email inválido</mat-error>
+        </mat-form-field>
+
+        <!-- Senha -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            [type]="senhaVisivel() ? 'text' : 'password'"
+            formControlName="senha"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="toggleSenhaVisivel()">
+            <mat-icon>{{ senhaVisivel() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="senhaCtrl.touched && senhaCtrl.hasError('required')">Senha é obrigatória</mat-error>
+          <mat-error *ngIf="senhaCtrl.touched && senhaCtrl.hasError('minlength')">Mínimo de 6 caracteres</mat-error>
+        </mat-form-field>
+
+        <!-- Confirmar Senha -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Confirmar senha</mat-label>
+          <input
+            matInput
+            [type]="confirmaSenhaVisivel() ? 'text' : 'password'"
+            formControlName="confirmaSenha"
+          />
+          <mat-icon matPrefix>lock_clock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="toggleConfirmaSenhaVisivel()">
+            <mat-icon>{{ confirmaSenhaVisivel() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="confirmaSenhaCtrl.touched && confirmaSenhaCtrl.hasError('required')">Confirmação de senha é obrigatória</mat-error>
+          <mat-error *ngIf="confirmaSenhaCtrl.touched && form.hasError('senhasDiferentes')">As senhas não coincidem</mat-error>
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="btn-criar"
+          [disabled]="carregando()"
+        >
+          <ng-container *ngIf="carregando(); else criarLabel">
+            <mat-spinner diameter="20"></mat-spinner>
+            Criando conta...
+          </ng-container>
+          <ng-template #criarLabel> Criar conta </ng-template>
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <p class="link-login">
+        Já tem conta?
+        <a routerLink="/login">Entrar</a>
+      </p>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

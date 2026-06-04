@@ -1,0 +1,105 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+
+    <!-- Cabeçalho -->
+    <mat-card-header>
+      <div class="logo">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <h1>FinControl</h1>
+      </div>
+      <p class="subtitulo">Gestão financeira pessoal</p>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <!-- Mensagem de erro do login -->
+      @if (erroLogin()) {
+        <!-- @if é o novo control flow do Angular 19 — substitui *ngIf -->
+        <div class="erro-alert">
+          <mat-icon>error_outline</mat-icon>
+          {{ erroLogin() }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Campo Email -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="seu@email.com"
+            autocomplete="email"
+          />
+          <mat-icon matPrefix>email</mat-icon>
+
+          <!-- Mensagens de erro de validação -->
+          @if (emailCtrl?.touched && emailCtrl?.hasError('required')) {
+            <mat-error>Email é obrigatório</mat-error>
+          }
+          @if (emailCtrl?.touched && emailCtrl?.hasError('email')) {
+            <mat-error>Formato de email inválido</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Campo Senha -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            [type]="senhaVisivel() ? 'text' : 'password'"
+            formControlName="senha"
+            autocomplete="current-password"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <!-- Botão toggle de visibilidade da senha -->
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="toggleSenha()"
+            [attr.aria-label]="senhaVisivel() ? 'Ocultar senha' : 'Mostrar senha'"
+          >
+            <mat-icon>{{ senhaVisivel() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+
+          @if (senhaCtrl?.touched && senhaCtrl?.hasError('required')) {
+            <mat-error>Senha é obrigatória</mat-error>
+          }
+          @if (senhaCtrl?.touched && senhaCtrl?.hasError('minlength')) {
+            <mat-error>Mínimo de 6 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Botão de submit -->
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="btn-entrar"
+          [disabled]="carregando()"
+        >
+          <!-- Mostra spinner enquanto carrega, texto normal caso contrário -->
+          @if (carregando()) {
+            <mat-spinner diameter="20" />
+            Entrando...
+          } @else {
+            Entrar
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <!-- Rodapé do card -->
+    <mat-card-actions>
+      <p class="link-registro">
+        Não tem conta?
+        <a routerLink="/registro">Criar conta</a>
+      </p>
+    </mat-card-actions>
+
+  </mat-card>
+</div>
