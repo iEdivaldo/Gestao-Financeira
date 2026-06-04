@@ -21,8 +21,8 @@ public class CorsConfig {
         // permite os metodos http
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        // permite todos os headers
-        config.setAllowedHeaders(List.of("*"));
+        // permite headers específicos (não usar * com credentials=true)
+        config.setAllowedHeaders(List.of("Content-Type", "Authorization", "Accept"));
 
         // Permite cookie, authorization headers
         config.setAllowCredentials(true);

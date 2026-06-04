@@ -53,23 +53,29 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
 
         // - Passo 5: verificar se o email foi extraído e se ainda não há um usuário autenticado no contexto de segurança - //
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
-            // - Passo 6: carregar os detalhes do usuário a partir do email extraído - //
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email); // Usa o UserDetailsService para carregar os detalhes do usuário a partir do email
+            try {
+                // - Passo 6: carregar os detalhes do usuário a partir do email extraído - //
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email); // Usa o UserDetailsService para carregar os detalhes do usuário a partir do email
 
-            // - Passo 7: validar o token usando os detalhes do usuário - //
-            if (jwtUtil.validarToken(token, userDetails)) { // Verifica se o token é válido para o usuário carregado
-                // - Passo 8: criar um objeto de autenticação e configurar o contexto de segurança - //
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities() // Cria um token de autenticação com os detalhes do usuário e suas autoridades (perfis)
-                );
-                
-                // - Passo 9: adicionar detalhes da requisição ao token de autenticação e configurar o contexto de segurança - //
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Configura os detalhes da autenticação com as informações da requisição (IP, sessão, etc)
-                
-                // - Passo 10: definir o token de autenticação no contexto de segurança para que o Spring reconheça o usuário como autenticado - //
-                SecurityContextHolder.getContext().setAuthentication(authToken); // Define o token de autenticação no contexto de segurança para que o Spring reconheça o usuário como autenticado
-                
-                log.debug("Usuário autenticado: {}", email); // Registra um log de depuração indicando que o usuário foi autenticado com sucesso
+                // - Passo 7: validar o token usando os detalhes do usuário - //
+                if (jwtUtil.validarToken(token, userDetails)) { // Verifica se o token é válido para o usuário carregado
+                    // - Passo 8: criar um objeto de autenticação e configurar o contexto de segurança - //
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities() // Cria um token de autenticação com os detalhes do usuário e suas autoridades (perfis)
+                    );
+                    
+                    // - Passo 9: adicionar detalhes da requisição ao token de autenticação e configurar o contexto de segurança - //
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Configura os detalhes da autenticação com as informações da requisição (IP, sessão, etc)
+                    
+                    // - Passo 10: definir o token de autenticação no contexto de segurança para que o Spring reconheça o usuário como autenticado - //
+                    SecurityContextHolder.getContext().setAuthentication(authToken); // Define o token de autenticação no contexto de segurança para que o Spring reconheça o usuário como autenticado
+                    
+                    log.debug("Usuário autenticado: {}", email); // Registra um log de depuração indicando que o usuário foi autenticado com sucesso
+                }
+            } catch (Exception e) {
+                // Se o usuário não for encontrado ou houver outro erro, apenas registra e continua
+                // Isso é importante para endpoints públicos como registro
+                log.debug("Não foi possível autenticar usuário com email: {} - Erro: {}", email, e.getMessage());
             }
         }
 

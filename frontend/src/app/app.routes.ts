@@ -21,14 +21,14 @@ export const routes: Routes = [
 
   // Rotas protegidas — exigem login (authGuard)
   // O layout principal será adicionado nas próximas etapas
-//   {
-//     path: 'dashboard',
-//     canActivate: [authGuard],
-//     loadComponent: () =>
-//       import('./features/dashboard/dashboard.component')
-//         .then(m => m.DashboardComponent)
-//     // Componente será criado na Etapa 7
-//   },
+  {
+    path: 'dashboard',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/dashboard/dashboard.component')
+        .then(m => m.DashboardComponent)
+    // Componente será criado na Etapa 7
+  },
 
   // Rota curinga — qualquer rota inválida vai para login
   { path: '**', redirectTo: '/login' }
