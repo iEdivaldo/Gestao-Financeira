@@ -1,0 +1,77 @@
+.header {
+  background: white;
+  border-bottom: 1px solid #e8eaf0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  height: 60px;
+  position: sticky; // fica fixo no topo ao rolar o conteúdo
+  top: 0;
+  z-index: 100;
+  padding: 0 16px;
+}
+
+.btn-menu {
+  margin-right: 8px;
+  color: #555;
+}
+
+.titulo-pagina {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a237e;
+}
+
+.spacer { flex: 1; }
+
+.btn-usuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 20px;
+  padding: 0 8px 0 4px;
+  color: #333;
+}
+
+.avatar-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1a237e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.usuario-nome-header {
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+  pointer-events: none; // não é clicável — apenas informativo
+}
+
+.menu-email {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+
+.menu-perfil {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}

@@ -1,0 +1,38 @@
+<mat-toolbar class="header">
+
+  <!-- Botão hamburguer para toggle da sidebar -->
+  <button mat-icon-button (click)="toggleSidebar.emit()" class="btn-menu">
+    <mat-icon>{{ sidebarAberta() ? 'menu_open' : 'menu' }}</mat-icon>
+  </button>
+
+  <!-- Título da página atual — será dinâmico futuramente -->
+  <span class="titulo-pagina">Gestão Financeira</span>
+
+  <!-- Espaço flexível empurra os itens seguintes para a direita -->
+  <span class="spacer"></span>
+
+  <!-- Menu do usuário -->
+  <button mat-button [matMenuTriggerFor]="menuUsuario" class="btn-usuario">
+    <div class="avatar-mini">
+      {{ authService.usuarioLogado()?.nome?.charAt(0)?.toUpperCase() }}
+    </div>
+    <span class="usuario-nome-header">
+      {{ authService.usuarioLogado()?.nome }}
+    </span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+
+  <!-- Dropdown do menu do usuário -->
+  <mat-menu #menuUsuario="matMenu" class="menu-usuario">
+    <div class="menu-header" mat-menu-item disabled>
+      <span class="menu-email">{{ authService.usuarioLogado()?.email }}</span>
+      <span class="menu-perfil">{{ authService.usuarioLogado()?.perfil }}</span>
+    </div>
+    <mat-divider />
+    <button mat-menu-item (click)="authService.logout()">
+      <mat-icon>logout</mat-icon>
+      Sair
+    </button>
+  </mat-menu>
+
+</mat-toolbar>

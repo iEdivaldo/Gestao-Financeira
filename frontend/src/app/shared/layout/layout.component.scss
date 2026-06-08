@@ -1,0 +1,23 @@
+.layout-container {
+  height: 100vh; // ocupa a altura total da janela
+  overflow: hidden;
+}
+
+.sidenav {
+  width: 240px;
+  border-right: none; // remove a borda padrão do Material
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.conteudo-principal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f5f6fa; // fundo levemente acinzentado para o conteúdo
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto; // scroll apenas na área de conteúdo, não no header
+  padding: 24px;
+}

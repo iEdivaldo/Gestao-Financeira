@@ -1,0 +1,149 @@
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1a237e; // azul escuro — cor principal da sidebar
+  color: white;
+  padding: 0;
+}
+
+// ── Logo ──────────────────────────────────────────────────────────────────────
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 16px;
+
+  .logo-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #90caf9; // azul claro
+  }
+
+  .logo-texto {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: white;
+  }
+}
+
+// ── Usuário ───────────────────────────────────────────────────────────────────
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0 12px 12px;
+  border-radius: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #1565c0;
+  border: 2px solid #90caf9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.usuario-dados {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // permite truncar o texto
+}
+
+.usuario-nome {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; // "..." quando o nome é muito longo
+}
+
+.usuario-perfil {
+  font-size: 11px;
+  color: #90caf9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// ── Divisor ───────────────────────────────────────────────────────────────────
+.divisor {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 4px 12px;
+}
+
+// ── Navegação ─────────────────────────────────────────────────────────────────
+.nav-lista {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 20px;
+  margin: 0 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  background: transparent;
+  width: calc(100% - 16px);
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  // Classe adicionada pelo routerLinkActive quando a rota está ativa
+  &.ativo {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 500;
+
+    .nav-icone {
+      color: #90caf9;
+    }
+  }
+
+  &.logout {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+
+    &:hover {
+      background: rgba(239, 83, 80, 0.2);
+      color: #ef9a9a;
+    }
+  }
+}
+
+.nav-icone {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  font-family: inherit;
+}
+
+// Empurra o logout para o rodapé
+.spacer { flex: 1; }

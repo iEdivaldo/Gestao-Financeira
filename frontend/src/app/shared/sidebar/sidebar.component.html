@@ -1,0 +1,44 @@
+<div class="sidebar">
+
+  <!-- Logo / Marca -->
+  <div class="sidebar-logo">
+    <mat-icon class="logo-icon">account_balance_wallet</mat-icon>
+    <span class="logo-texto">FinControl</span>
+  </div>
+
+  <!-- Informações do usuário logado -->
+  <div class="usuario-info">
+    <div class="avatar">
+      <!-- Exibe as iniciais do nome do usuário -->
+      {{ authService.usuarioLogado()?.nome?.charAt(0)?.toUpperCase() }}
+    </div>
+    <div class="usuario-dados">
+      <span class="usuario-nome">{{ authService.usuarioLogado()?.nome }}</span>
+      <span class="usuario-perfil">{{ authService.usuarioLogado()?.perfil }}</span>
+    </div>
+  </div>
+
+  <!-- Divisor -->
+  <div class="divisor"></div>
+
+  <!-- Navegação -->
+  <nav class="nav-lista">
+    <a *ngFor="let item of navItems" [routerLink]="item.rota" routerLinkActive="ativo" class="nav-item" matRipple (click)="onNavClick()">
+      <mat-icon class="nav-icone">{{ item.icone }}</mat-icon>
+      <span class="nav-label">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <!-- Espaço flexível para empurrar o logout para baixo -->
+  <div class="spacer"></div>
+
+  <!-- Divisor -->
+  <div class="divisor"></div>
+
+  <!-- Botão de logout -->
+  <button class="nav-item logout" matRipple (click)="authService.logout()">
+    <mat-icon class="nav-icone">logout</mat-icon>
+    <span class="nav-label">Sair</span>
+  </button>
+
+</div>

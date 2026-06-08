@@ -20,15 +20,25 @@ export const routes: Routes = [
   },
 
   // Rotas protegidas — exigem login (authGuard)
-  // O layout principal será adicionado nas próximas etapas
   {
-    path: 'dashboard',
+    path: '',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/dashboard/dashboard.component')
-        .then(m => m.DashboardComponent)
-    // Componente será criado na Etapa 7
+      import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    // children: rotas filhas renderizam dentro do <router-outlet> do Layout
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      // As demais rotas (transacoes, contas, etc.) serão adicionadas nas próximas etapas
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   },
+
+  // O layout principal será adicionado nas próximas etapas
+
 
   // Rota curinga — qualquer rota inválida vai para login
   { path: '**', redirectTo: '/login' }

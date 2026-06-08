@@ -1,0 +1,31 @@
+<mat-sidenav-container class="layout-container">
+
+  <!-- Sidebar lateral -->
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="sidebarAberta()"
+    class="sidenav"
+  >
+    <!-- mode="side": sidebar fixa ao lado do conteúdo (desktop) -->
+    <!-- mode="over": sidebar sobrepõe o conteúdo (mobile) -->
+    <app-sidebar (fechar)="isMobile() && toggleSidebar()" />
+  </mat-sidenav>
+
+  <!-- Conteúdo principal -->
+  <mat-sidenav-content class="conteudo-principal">
+
+    <!-- Header fixo no topo -->
+    <app-header
+      [sidebarAberta]="sidebarAberta()"
+      (toggleSidebar)="toggleSidebar()"
+    />
+
+    <!-- Área de conteúdo — cada rota renderiza aqui -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
